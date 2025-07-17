@@ -4,7 +4,7 @@
 - Implement a full login with email and pass and integrate Google for log in
 - Create your Bio Custom links and addition of creating a pciture bio
 
-## BioTree a _Linktree_ clone H1
+## BioTree a _Linktree_ clone
 
 ## Task to-do
 
