@@ -2,7 +2,7 @@
 import { LoginForm } from "@/components/login-form";
 import { Signup } from "@/components/signup-form";
 import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff, Link2, Sparkles } from "lucide-react";
+import { Link2 } from "lucide-react";
 
 export default function Page() {
   const [isLogin, setIsLogin] = useState(true);

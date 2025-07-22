@@ -1,5 +1,4 @@
 import BioCard from "@/components/bio-card";
-import { Mail, Lock, Eye, EyeOff, Link2, Sparkles } from "lucide-react";
 
 export default function Home() {
   return (
