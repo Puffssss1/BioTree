@@ -18,13 +18,13 @@ interface StepThreeProps {
     avatar: string;
   };
   links: Link[];
-  getIconComponent: (iconName: string) => React.ElementType;
+  iconComponents: Record<string, React.ElementType>;
 }
 
 export default function StepThree({
   formData,
   links,
-  getIconComponent,
+  iconComponents,
 }: StepThreeProps) {
   return (
     <div className="bg-white/80 backdrop-blur-sm border border-white/20 shadow-2xl rounded-2xl p-8 space-y-8">
@@ -66,14 +66,14 @@ export default function StepThree({
           Your Links
         </h2>
         {links.map((link) => {
-          const Icon = getIconComponent(link.icon);
+          const Icon = iconComponents[link.icon] || Globe;
           return (
             <a
               key={link.id}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r ${link.color} text-white shadow-md`}
+              className={`flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r ${link.color} text-white shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
             >
               <div className="w-10 h-10 bg-white/30 rounded-lg flex items-center justify-center">
                 <Icon className="w-5 h-5" />
