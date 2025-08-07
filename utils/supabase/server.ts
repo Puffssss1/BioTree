@@ -4,8 +4,6 @@ import { cookies } from "next/headers";
 export async function createClient() {
   const cookieStore = await cookies();
 
-  // Create a server's supabase client with newly configured cookie,
-  // which could be used to maintain user's session
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE!,
     process.env.NEXT_PUBLIC_ANON_KEY!,
@@ -25,11 +23,6 @@ export async function createClient() {
             // user sessions.
           }
         },
-      },
-      auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true,
       },
     }
   );

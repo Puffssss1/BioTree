@@ -10,24 +10,23 @@ import {
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { useState } from "react";
+// import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { signUp } from "@/app/actions/auth";
 
 type SignupProps = React.ComponentProps<"div"> & {
   setIsLogin: (value: boolean) => void;
-  onSignup: (email: string, password: string, name: string) => void;
 };
 
-export function Signup({
-  className,
-  setIsLogin,
-  onSignup,
-  ...props
-}: SignupProps) {
+export function Signup({ className, setIsLogin, ...props }: SignupProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  // const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,20 +47,38 @@ export function Signup({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Password Didn't matched");
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
+    const signUpCredentials = new FormData(e.currentTarget);
+    const result = await signUp(signUpCredentials);
 
-    // Simulate API call
-    setTimeout(() => {
-      onSignup(formData.email, formData.password, formData.name);
+    if (result.status === "success") {
+      toast.success("WooHoo!, You've Successfully created your Account!!");
+      setTimeout(() => {
+        // router.push("/");
+        setIsLogin(true);
+        setIsLoading(false);
+      }, 1000);
+      setTimeout(() => {
+        toast.success("Login with the account you create");
+      }, 1500);
+    } else {
+      console.log(result.status);
+      toast.error("Something Went Wrong: " + result.status);
       setIsLoading(false);
-    }, 1000);
+    }
+
+    // setTimeout(() => {
+    //   onSignup(formData.email, formData.password, formData.name);
+    //   setIsLoading(false);
+    // }, 1000);
   };
 
   const getPasswordStrengthColor = () => {
@@ -117,6 +134,7 @@ export function Signup({
                   <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="email"
+                    name="email"
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     className="w-full pl-12 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
@@ -195,6 +213,7 @@ export function Signup({
                   <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type={showConfirmPassword ? "text" : "password"}
+                    name="password"
                     value={formData.confirmPassword}
                     onChange={(e) =>
                       handleInputChange("confirmPassword", e.target.value)

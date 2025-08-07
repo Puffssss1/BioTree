@@ -13,58 +13,40 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signinWithGoogle } from "@/utils/actions";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { signIn } from "@/app/actions/auth";
 
 type SignupProps = React.ComponentProps<"div"> & {
   setIsLogin: (value: boolean) => void;
 };
-interface User {
-  id: number;
-  email: string;
-  password: string;
-  name: string;
-}
-
-const mockUsers: User[] = [
-  {
-    id: 1,
-    email: "john@example.com",
-    password: "123456", // In real apps, never store plaintext passwords
-    name: "John Doe",
-  },
-  {
-    id: 2,
-    email: "jane@example.com",
-    password: "password123",
-    name: "Jane Smith",
-  },
-];
 
 export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  function Login(email: string, password: string): User | null {
-    const findUser = mockUsers.find(
-      (user) => user.email === email && user.password === password
-    );
-    return findUser || null;
-  }
-
-  function hanldeLogin(e: React.FormEvent) {
+  async function hanldeLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const user = Login(email, password);
+    setIsLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const result = await signIn(formData);
 
-    if (user) {
-      toast.success("Welcom back!, You Successfully Login to your Account!!");
+    if (result.status === "success") {
+      toast.success(
+        "Welcom back!, You Successfully Logged in to your Account!!"
+      );
       setTimeout(() => {
         router.push("/");
+        setIsLoading(false);
       }, 1000);
       console.log("login successful");
     } else {
-      toast.error("User or Password is incorrect");
-      console.log("user not found");
+      setIsLoading(true);
+      setTimeout(() => {
+        toast.error("Something went wrong: " + result.status);
+        setIsLoading(false);
+      }, 1000);
     }
   }
 
@@ -89,8 +71,9 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
                   <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    // value={email}
+                    // onChange={(e) => setEmail(e.target.value)}
                     className="w-full pl-12 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
                     placeholder="Enter your email"
                     required
@@ -115,8 +98,9 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
                   <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                    // value={password}
+                    // onChange={(e) => setPassword(e.target.value)}
                     className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
                     placeholder="Enter your password"
                     required
@@ -134,12 +118,23 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
                   </button>
                 </div>
               </div>
+              {/* Login */}
               <div className="flex flex-col gap-3">
                 <Button
                   type="submit"
+                  disabled={isLoading}
                   className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  Login
+                  {isLoading ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Logging In...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center space-x-2">
+                      <span>Login Account</span>
+                    </div>
+                  )}
                 </Button>
 
                 {/* Divider */}

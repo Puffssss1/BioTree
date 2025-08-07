@@ -1,6 +1,14 @@
 import BioCard from "@/components/bio-card";
+// import Logout from "@/components/logout";
+import { createClient } from "@/utils/supabase/server";
+import { Link, LogIn, LogOut } from "lucide-react";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen py-8 px-4">
       {/* Animated background elements */}
@@ -20,13 +28,17 @@ export default function Home() {
               Create your personalized link tree
             </p>
           </div>
-          <button
-            // onClick={onLogout}
-            className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-          >
-            {/* <LogOut className="w-4 h-4" /> */}
-            <span>Logout</span>
-          </button>
+          {/* log out */}
+          {!user ? (
+            <Link href="/login">
+              <LogIn className="w-4 h-4" />
+              <span>Login</span>
+            </Link>
+          ) : (
+            <>
+              <LogOut />
+            </>
+          )}
         </div>
 
         {/* Bio Card */}
