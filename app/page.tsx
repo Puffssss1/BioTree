@@ -1,7 +1,9 @@
 import BioCard from "@/components/bio-card";
-// import Logout from "@/components/logout";
+import Logout from "@/components/logout";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 import { Link, LogIn, LogOut } from "lucide-react";
+import { signOut } from "./actions/auth";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -36,7 +38,15 @@ export default async function Home() {
             </Link>
           ) : (
             <>
-              <LogOut />
+              <Button
+                onClick={signOut}
+                variant="destructive"
+                className="hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                <div className="flex items-center gap-x-4 text-sm">
+                  {user?.email} <LogOut className="w-4 h-4" />
+                </div>
+              </Button>
             </>
           )}
         </div>
