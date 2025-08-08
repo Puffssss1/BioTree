@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const { data, error } = await supabase
-    .from("user_profile")
+    .from("users")
     .select("id, email, name");
   if (error) {
     return NextResponse.json({ message: error.message }, { status: 400 });
@@ -22,11 +22,6 @@ export async function POST(req: Request) {
   };
 
   const { error } = await supabase.auth.signUp(data);
-  const { error: insertError } = await supabase.from("user_profile").insert({
-    email: data.email,
-    name: data.name,
-  });
-
   // const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {

@@ -25,7 +25,7 @@ function Logout() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const supabase = creatClientCSR();
+      const supabase = await creatClientCSR();
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -57,8 +57,7 @@ function Logout() {
             </>
           ) : (
             <div className="flex items-center gap-x-4 text-sm">
-              <span className="hidden sm:inline">{userName}</span>
-              <LogOut className="w-4 h-4" />
+              {userName} <LogOut className="w-4 h-4" />
             </div>
           )}
         </Button>
