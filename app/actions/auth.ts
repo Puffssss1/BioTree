@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
+import { creatClientCSR } from "@/utils/supabase/client";
 // import { headers } from "next/headers";
 
 export async function signUp(formData: FormData) {
@@ -64,7 +65,7 @@ export async function signIn(formData: FormData) {
 }
 
 export async function signOut() {
-  const supabase = await createClient();
+  const supabase = creatClientCSR();
 
   const { error } = await supabase.auth.signOut();
 
