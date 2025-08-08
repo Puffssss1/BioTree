@@ -10,7 +10,7 @@ export async function signUp(formData: FormData) {
   const supabase = await createClient();
 
   const credentials = {
-    username: formData.get("name") as string,
+    name: formData.get("name") as string,
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
@@ -18,11 +18,11 @@ export async function signUp(formData: FormData) {
   const { error, data } = await supabase.auth.signUp({
     email: credentials.email,
     password: credentials.password,
-    options: {
-      data: {
-        username: credentials.username,
-      },
-    },
+    // options: {
+    //   data: {
+    //     // name: credentials.name,
+    //   },
+    // },
   });
 
   if (error) {
@@ -37,6 +37,18 @@ export async function signUp(formData: FormData) {
       user: null,
     };
   }
+
+  // const { error: insertError } = await supabase.from("user_profile").insert({
+  //   email: credentials.email,
+  //   name: credentials.name,
+  // });
+
+  // if (insertError) {
+  //   return {
+  //     status: insertError.message,
+  //     user: null,
+  //   };
+  // }
 
   revalidatePath("/", "layout");
   return { status: "success", user: data.user };
