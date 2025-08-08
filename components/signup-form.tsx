@@ -68,7 +68,7 @@ export function Signup({ className, setIsLogin, ...props }: SignupProps) {
         setIsLoading(false);
       }, 1000);
       setTimeout(() => {
-        toast.success("Login with the account you create");
+        toast.success("Welcome to BioTree!");
       }, 1500);
     } else {
       console.log(result.status);

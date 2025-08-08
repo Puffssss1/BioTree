@@ -11,9 +11,8 @@ import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signinWithGoogle } from "@/utils/actions";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { signIn } from "@/app/actions/auth";
+import { signIn, signinWithGoogle } from "@/app/actions/auth";
 
 type SignupProps = React.ComponentProps<"div"> & {
   setIsLogin: (value: boolean) => void;
@@ -149,7 +148,7 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
                   <Button
                     variant="outline"
                     className="w-full hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    formAction={signinWithGoogle}
+                    onClick={signinWithGoogle}
                   >
                     Login with Google
                   </Button>
@@ -160,13 +159,14 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
             {/* ✅ Toggle login/signup instead of redirect */}
             <div className="mt-6 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <button
+              <Button
+                variant="link"
                 type="button"
                 className="text-blue-600 cursor-pointer hover:underline"
                 onClick={() => setIsLogin(false)}
               >
                 Create an Account
-              </button>
+              </Button>
             </div>
           </form>
         </CardContent>

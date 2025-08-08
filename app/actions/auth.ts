@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-// import { headers } from "next/headers";
+import { headers } from "next/headers";
 
 export async function getUserSession() {
   const supabase = await createClient();
@@ -100,4 +100,27 @@ export async function signOut() {
 
   revalidatePath("/", "layout");
   redirect("/login");
+}
+
+export async function signinWithGoogle() {
+  const origin = (await headers()).get("origin");
+  const supabase = await createClient();
+
+  const auth_callback_url = `${origin}/auth/callback`;
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: auth_callback_url,
+    },
+  });
+
+  console.log(data);
+
+  if (error) {
+    console.log(error);
+    redirect("/error");
+  } else if (data.url) {
+    return redirect(data.url);
+  }
 }

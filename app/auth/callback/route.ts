@@ -16,6 +16,32 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      const { data, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        console.log("error in fetching user data: ", userError.message);
+        return NextResponse.redirect(`${origin}/error`);
+      }
+      const { data: existingUser } = await supabase
+        .from("user_profile")
+        .select("*")
+        .eq("email", data?.user?.email)
+        .limit(1)
+        .single();
+
+      const fullname = data?.user?.email;
+      console.log(existingUser, fullname);
+
+      if (!existingUser) {
+        const { error: dbError } = await supabase.from("user_profile").insert({
+          email: data?.user?.email,
+          name: data?.user?.user_metadata?.name,
+        });
+        if (dbError) {
+          console.error("Error inserting User Data", dbError.message);
+          return NextResponse.redirect(`${origin}/error`);
+        }
+      }
+
       const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === "development";
       if (isLocalEnv) {
