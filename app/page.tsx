@@ -11,6 +11,8 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  const { data } = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen py-8 px-4">
       {/* Animated background elements */}
@@ -54,6 +56,8 @@ export default async function Home() {
 
         {/* Bio Card */}
         <BioCard />
+        <h1>hello, {data?.user?.user_metadata?.name}</h1>
+        <h1>hello, {data?.user?.user_metadata.firstName}</h1>
       </div>
     </div>
   );

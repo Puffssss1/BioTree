@@ -20,7 +20,8 @@ type SignupProps = React.ComponentProps<"div"> & {
 
 export function Signup({ className, setIsLogin, ...props }: SignupProps) {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -108,14 +109,40 @@ export function Signup({ className, setIsLogin, ...props }: SignupProps) {
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <label className="text-sm font-semibold text-gray-700">
-                  Full Name
+                  First Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                    className="w-full pl-12 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Last name */}
+            <div className="flex flex-col gap-6 mt-4">
+              <div className="grid gap-3">
+                <label className="text-sm font-semibold text-gray-700">
+                  Last Name
+                </label>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
                     className="w-full pl-12 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
                     placeholder="Enter your full name"
                     required

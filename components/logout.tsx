@@ -22,10 +22,11 @@ import { toast } from "sonner";
 function Logout() {
   const [userName, setUserName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  // const [user, setUser] = useState<string>('');
 
   useEffect(() => {
     const fetchUser = async () => {
-      const supabase = await creatClientCSR();
+      const supabase = creatClientCSR();
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -35,6 +36,20 @@ function Logout() {
 
     fetchUser();
   }, []);
+
+  // useEffect(() => {
+  //   async function getUser() {
+  //     const supabase = await createClient();
+  //     const { data, error } = await supabase.auth.getUser();
+
+  //     if (error || !data?.user) {
+  //       console.log('no user is login')
+  //     } else {
+  //       setUser(data?.user)
+  //     }
+  //   }
+  //   getUser()
+  // }, [])
 
   const handleLogOut = async () => {
     await signOut();
@@ -57,7 +72,8 @@ function Logout() {
             </>
           ) : (
             <div className="flex items-center gap-x-4 text-sm">
-              {userName} <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">{userName}</span>
+              <LogOut className="w-4 h-4" />
             </div>
           )}
         </Button>
