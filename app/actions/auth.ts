@@ -3,8 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { creatClientCSR } from "@/utils/supabase/client";
 // import { headers } from "next/headers";
+
+export async function getUserSession() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    return null;
+  }
+  return { status: "sucess", user: data?.user };
+}
 
 export async function signUp(formData: FormData) {
   const supabase = await createClient();
@@ -81,7 +90,7 @@ export async function signIn(formData: FormData) {
 }
 
 export async function signOut() {
-  const supabase = creatClientCSR();
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.signOut();
 

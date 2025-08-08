@@ -11,8 +11,6 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data } = await supabase.auth.getUser();
-
   return (
     <div className="min-h-screen py-8 px-4">
       {/* Animated background elements */}
@@ -46,7 +44,8 @@ export default async function Home() {
                 className="hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <div className="flex items-center gap-x-4 text-sm">
-                  {user?.email} <LogOut className="w-4 h-4" />
+                  <span className="hidden sm:inline">{user?.email}</span>
+                  <LogOut className="w-4 h-4" />
                 </div>
               </Button> */}
               <Logout />
@@ -56,8 +55,6 @@ export default async function Home() {
 
         {/* Bio Card */}
         <BioCard />
-        <h1>hello, {data?.user?.user_metadata?.name}</h1>
-        <h1>hello, {data?.user?.user_metadata.firstName}</h1>
       </div>
     </div>
   );

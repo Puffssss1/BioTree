@@ -22,7 +22,7 @@ import { toast } from "sonner";
 function Logout() {
   const [userName, setUserName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
-  // const [user, setUser] = useState<string>('');
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,25 +37,27 @@ function Logout() {
     fetchUser();
   }, []);
 
-  // useEffect(() => {
-  //   async function getUser() {
-  //     const supabase = await createClient();
-  //     const { data, error } = await supabase.auth.getUser();
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = await creatClientCSR();
+      const { data, error } = await supabase.auth.getUser();
 
-  //     if (error || !data?.user) {
-  //       console.log('no user is login')
-  //     } else {
-  //       setUser(data?.user)
-  //     }
-  //   }
-  //   getUser()
-  // }, [])
+      if (error || !data?.user) {
+        console.log("no user is login");
+      }
+      setUser(data?.user?.user_metadata?.firstName);
+      setIsLoading(false);
+    };
+    getUser();
+  }, []);
 
   const handleLogOut = async () => {
+    setTimeout(() => {
+      toast.message("Successfully Logged out", {
+        description: "Thanks for using BioTree",
+      });
+    }, 1000);
     await signOut();
-    toast.message("Successfully Logged out", {
-      description: "Thanks for using BioTree",
-    });
   };
 
   return (
@@ -80,7 +82,9 @@ function Logout() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            Hey {user} are you absolutely sure?
+          </AlertDialogTitle>
           <AlertDialogDescription>
             You are Signing Out to your account. Click confirm if you&apos;re
             sure.
