@@ -12,7 +12,7 @@ export async function getUserSession() {
   if (error) {
     return null;
   }
-  return { status: "sucess", user: data?.user };
+  return { status: "sucess", user: data?.user, error: error };
 }
 
 export async function signUp(formData: FormData) {
@@ -29,6 +29,7 @@ export async function signUp(formData: FormData) {
     email: credentials.email,
     password: credentials.password,
     options: {
+      emailRedirectTo: "/",
       data: {
         firstName: credentials.firstName,
         lastName: credentials.lastName,
@@ -45,20 +46,6 @@ export async function signUp(formData: FormData) {
   } else if (data?.user?.identities?.length === 0) {
     return {
       status: "",
-      user: null,
-    };
-  }
-
-  const fullname = credentials.firstName + " " + credentials.lastName;
-
-  const { error: insertError } = await supabase.from("user_profile").insert({
-    email: credentials.email,
-    name: fullname,
-  });
-
-  if (insertError) {
-    return {
-      status: insertError.message,
       user: null,
     };
   }
@@ -85,6 +72,25 @@ export async function signIn(formData: FormData) {
     };
   }
 
+  const exisingUser = await getUserSession();
+  const fullname =
+    exisingUser?.user.user_metadata.firstName +
+    " " +
+    exisingUser?.user.user_metadata.lastName;
+
+  if (!exisingUser) {
+    // return { status: "no user" };
+  }
+  const { error: insertError } = await supabase.from("user_profile").insert({
+    email: credentials.email,
+    name: fullname,
+  });
+  // if (insertError) {
+  //   return {
+  //     status: insertError.message,
+  //     user: null,
+  //   };
+  // }
   revalidatePath("/", "layout");
   return { status: "success", user: data.user };
 }
@@ -114,9 +120,6 @@ export async function signinWithGoogle() {
       redirectTo: auth_callback_url,
     },
   });
-
-  console.log(data);
-
   if (error) {
     console.log(error);
     redirect("/error");

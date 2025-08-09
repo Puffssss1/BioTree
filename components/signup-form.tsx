@@ -61,7 +61,9 @@ export function Signup({ className, setIsLogin, ...props }: SignupProps) {
     const result = await signUp(signUpCredentials);
 
     if (result.status === "success") {
-      toast.success("WooHoo!, You've Successfully created your Account!!");
+      toast.success(
+        "WooHoo!, You've Successfully created your Account!! Please check your email to verify account"
+      );
       setTimeout(() => {
         // router.push("/");
         setIsLogin(true);
