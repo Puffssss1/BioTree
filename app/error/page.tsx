@@ -8,23 +8,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+// import { useSearchParams } from "next/navigation";
+// import { useEffect } from "react";
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
-  const searchParams = useSearchParams();
-  const message = searchParams.get("message");
+export default function Error(
+  {
+    // error,
+    // reset,
+  }
+) // :
+{
+  // const searchParams = useSearchParams();
+  // const message = searchParams.get("message");
 
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
+  // useEffect(() => {
+  //   // Log the error to an error reporting service
+  //   console.error(error);
+  // }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-950">
@@ -38,11 +38,16 @@ export default function Error({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {message && <p className="text-red-500 text-center">{message}</p>}
+          {/* {message &&  */}
+          <p className="text-red-500 text-center">{/* {message} */}</p>
+          {/* } */}
           <p className="text-muted-foreground text-center">
             Please try again. If the issue persists, contact support.
           </p>
-          <Button onClick={() => reset()} className="w-full">
+          <Button
+            // onClick={() => reset()}
+            className="w-full"
+          >
             Try again
           </Button>
         </CardContent>
