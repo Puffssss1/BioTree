@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { getUserById, signIn, signinWithGoogle } from "@/app/actions/auth";
+import { signIn, signinWithGoogle } from "@/app/actions/auth";
 
 type SignupProps = React.ComponentProps<"div"> & {
   setIsLogin: (value: boolean) => void;
