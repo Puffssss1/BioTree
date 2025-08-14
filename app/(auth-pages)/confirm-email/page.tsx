@@ -15,7 +15,7 @@ import {
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { EmailOtpType } from "@supabase/supabase-js";
-import { verifyEmail } from "@/app/actions/auth";
+import { verifyEmail } from "@/app/auth/actions/auth";
 
 function ConfirmEmail() {
   const [userEmaill, setUserEmail] = useState<string>("");

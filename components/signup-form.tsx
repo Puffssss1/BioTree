@@ -12,7 +12,7 @@ import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { useState } from "react";
 // import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { signinWithGoogle, signUp } from "@/app/actions/auth";
+import { signinWithGoogle, signUp } from "@/app/auth/actions/auth";
 
 type SignupProps = React.ComponentProps<"div"> & {
   setIsLogin: (value: boolean) => void;

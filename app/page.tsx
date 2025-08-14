@@ -1,4 +1,5 @@
 import BioCard from "@/components/bio-card";
+import Cards from "@/components/cards";
 import Logout from "@/components/logout";
 import { createClient } from "@/utils/supabase/server";
 import { Link, LogIn } from "lucide-react";
@@ -17,7 +18,7 @@ export default async function Home() {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-500"></div>
       </div>
-      <div className="relative z-10 max-w-2xl mx-auto">
+      <div className="relative z-10 max-w-full mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -43,6 +44,7 @@ export default async function Home() {
 
         {/* List of Bio */}
         <BioCard />
+        <Cards />
       </div>
     </div>
   );

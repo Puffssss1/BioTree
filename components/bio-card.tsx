@@ -65,6 +65,14 @@ export default function BioCard() {
     setLinks((prev) => prev.filter((link) => link.id !== id));
   };
 
+  const handleCLick = () => {
+    toast.success(
+      "You have Created your BioTree, share the link to your link to anyone!"
+    );
+    console.log(links);
+    console.log(formData);
+  };
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       {step === 1 && (
@@ -105,11 +113,7 @@ export default function BioCard() {
         ) : (
           <button
             className="ml-auto flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            onClick={() =>
-              toast.success(
-                "You have Created your BioTree, share the link to your link to anyone!"
-              )
-            }
+            onClick={handleCLick}
           >
             <Save className="w-4 h-4" /> <span>Finish</span>
           </button>
