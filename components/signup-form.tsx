@@ -294,7 +294,6 @@ export function Signup({ className, setIsLogin, ...props }: SignupProps) {
           {/* use Google */}
           <Button
             variant="outline"
-            disabled
             className="w-full hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             onClick={signinWithGoogle}
           >
