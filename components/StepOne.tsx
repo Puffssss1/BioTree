@@ -1,5 +1,5 @@
 // === StepOne.tsx ===
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { User, MapPin, Camera } from "lucide-react";
 import { creatClientCSR } from "@/utils/supabase/client";
 
@@ -14,7 +14,7 @@ interface StepOneProps {
 }
 
 export default function StepOne({ formData, handleInputChange }: StepOneProps) {
-  const [displayName, setDisplayName] = useState();
+  // const [displayName, setDisplayName] = useState();
 
   useEffect(() => {
     async function getUser() {
@@ -23,7 +23,7 @@ export default function StepOne({ formData, handleInputChange }: StepOneProps) {
       if (error || !data?.user) {
         console.log("no user logged in");
       }
-      setDisplayName(data?.user?.user_metadata?.firstName);
+      // setDisplayName(data?.user?.user_metadata?.firstName);
       // return <p>Hello {data?.user?.user_metadata?.firstName}</p>;
     }
     getUser();
