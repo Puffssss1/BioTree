@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { signIn, signinWithGoogle } from "@/app/actions/auth";
+import { getUserById, signIn, signinWithGoogle } from "@/app/actions/auth";
 
 type SignupProps = React.ComponentProps<"div"> & {
   setIsLogin: (value: boolean) => void;
@@ -30,6 +30,7 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
     setIsLoading(true);
     const formData = new FormData(e.currentTarget);
     const result = await signIn(formData);
+    // const checkUser = await getUserById(formData);
 
     if (result.status === "success") {
       toast.success(
@@ -45,7 +46,7 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
       setTimeout(() => {
         toast.error("Something went wrong: " + result.status);
         setIsLoading(false);
-      }, 1000);
+      }, 1500);
     }
   }
 

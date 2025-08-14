@@ -28,9 +28,6 @@ export async function GET(request: Request) {
         .limit(1)
         .single();
 
-      const fullname = data?.user?.email;
-      console.log(existingUser, fullname);
-
       if (!existingUser) {
         const { error: dbError } = await supabase.from("user_profile").insert({
           email: data?.user?.email,

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
+import { type EmailOtpType } from "@supabase/supabase-js";
 
 export async function getUserSession() {
   const supabase = await createClient();
@@ -13,6 +14,25 @@ export async function getUserSession() {
     return null;
   }
   return { status: "sucess", user: data?.user, error: error };
+}
+
+export async function getUserById(formData: FormData) {
+  const supabase = await createClient();
+  const email = formData.get("email") as string;
+
+  // const { data: exisingUser } = await supabase
+  //   .from("users")
+  //   .select("*")
+  //   .eq("email", email)
+  //   .single();
+
+  const { data: exisingUser } = await supabase.auth.admin.listUsers();
+
+  if (!exisingUser) {
+    return { status: "no user", user: exisingUser };
+  }
+
+  return { status: "user exist", user: exisingUser.users };
 }
 
 export async function signUp(formData: FormData) {
@@ -71,26 +91,6 @@ export async function signIn(formData: FormData) {
       user: null,
     };
   }
-
-  const exisingUser = await getUserSession();
-  const fullname =
-    exisingUser?.user.user_metadata.firstName +
-    " " +
-    exisingUser?.user.user_metadata.lastName;
-
-  if (!exisingUser) {
-    // return { status: "no user" };
-  }
-  const { error: insertError } = await supabase.from("user_profile").insert({
-    email: credentials.email,
-    name: fullname,
-  });
-  // if (insertError) {
-  //   return {
-  //     status: insertError.message,
-  //     user: null,
-  //   };
-  // }
   revalidatePath("/", "layout");
   return { status: "success", user: data.user };
 }
@@ -113,6 +113,7 @@ export async function signinWithGoogle() {
   const supabase = await createClient();
 
   const auth_callback_url = `${origin}/auth/callback`;
+  console.log(auth_callback_url);
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
@@ -121,9 +122,49 @@ export async function signinWithGoogle() {
     },
   });
   if (error) {
-    console.log(error);
+    console.log("this error: ", error);
     redirect("/error");
   } else if (data.url) {
     return redirect(data.url);
+  }
+}
+
+async function addUser(email: string, name: string) {
+  const supabase = await createClient();
+  const { data: exisingUser } = await supabase
+    .from("user_profile")
+    .select("*")
+    .eq("email", email)
+    .single();
+
+  if (!exisingUser) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { error: insertError } = await supabase.from("user_profile").insert({
+      email: email,
+      name: name,
+    });
+  }
+}
+
+export async function verifyEmail(
+  token_hash: string,
+  type: EmailOtpType,
+  email: string,
+  name: string
+) {
+  if (token_hash && type) {
+    const supabase = await createClient();
+
+    const { error } = await supabase.auth.verifyOtp({
+      type,
+      token_hash,
+    });
+    if (!error) {
+      addUser(email, name);
+      console.log(error);
+      redirect("/login");
+    }
+
+    redirect("/error");
   }
 }
