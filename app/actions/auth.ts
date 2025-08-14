@@ -16,24 +16,24 @@ export async function getUserSession() {
   return { status: "sucess", user: data?.user, error: error };
 }
 
-export async function getUserById(formData: FormData) {
-  const supabase = await createClient();
-  const email = formData.get("email") as string;
+// export async function getUserById(formData: FormData) {
+//   const supabase = await createClient();
+//   const email = formData.get("email") as string;
 
-  // const { data: exisingUser } = await supabase
-  //   .from("users")
-  //   .select("*")
-  //   .eq("email", email)
-  //   .single();
+//   // const { data: exisingUser } = await supabase
+//   //   .from("users")
+//   //   .select("*")
+//   //   .eq("email", email)
+//   //   .single();
 
-  const { data: exisingUser } = await supabase.auth.admin.listUsers();
+//   const { data: exisingUser } = await supabase.auth.admin.listUsers();
 
-  if (!exisingUser) {
-    return { status: "no user", user: exisingUser };
-  }
+//   if (!exisingUser) {
+//     return { status: "no user", user: exisingUser };
+//   }
 
-  return { status: "user exist", user: exisingUser.users };
-}
+//   return { status: "user exist", user: exisingUser.users };
+// }
 
 export async function signUp(formData: FormData) {
   const supabase = await createClient();
@@ -113,7 +113,6 @@ export async function signinWithGoogle() {
   const supabase = await createClient();
 
   const auth_callback_url = `${origin}/auth/callback`;
-  console.log(auth_callback_url);
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
@@ -121,8 +120,11 @@ export async function signinWithGoogle() {
       redirectTo: auth_callback_url,
     },
   });
+
+  console.log(data);
+
   if (error) {
-    console.log("this error: ", error);
+    console.log(error);
     redirect("/error");
   } else if (data.url) {
     return redirect(data.url);
