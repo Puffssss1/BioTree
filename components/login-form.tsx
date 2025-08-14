@@ -136,40 +136,38 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
                     </div>
                   )}
                 </Button>
-
-                {/* Divider */}
-                <div className="flex items-center">
-                  <div className="flex-1 border-t border-gray-200"></div>
-                  <span className="px-4 text-sm text-gray-500">or</span>
-                  <div className="flex-1 border-t border-gray-200"></div>
-                </div>
-
-                <div className="relative">
-                  {/* add google icon here */}
-                  <Button
-                    variant="outline"
-                    className="w-full hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    onClick={signinWithGoogle}
-                  >
-                    Login with Google
-                  </Button>
-                </div>
               </div>
             </div>
-
-            {/* ✅ Toggle login/signup instead of redirect */}
-            <div className="mt-6 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Button
-                variant="link"
-                type="button"
-                className="text-blue-600 cursor-pointer hover:underline"
-                onClick={() => setIsLogin(false)}
-              >
-                Create an Account
-              </Button>
-            </div>
           </form>
+
+          {/* Divider */}
+          <div className="flex items-center m-4">
+            <div className="flex-1 border-t border-gray-200"></div>
+            <span className="px-4 text-sm text-gray-500">or</span>
+            <div className="flex-1 border-t border-gray-200"></div>
+          </div>
+
+          {/* add google icon here */}
+          <Button
+            variant="outline"
+            className="w-full hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            onClick={signinWithGoogle}
+          >
+            Login with Google
+          </Button>
+
+          {/* ✅ Toggle login/signup instead of redirect */}
+          <div className="mt-6 text-center text-sm">
+            Don&apos;t have an account?{" "}
+            <Button
+              variant="link"
+              type="button"
+              className="text-blue-600 cursor-pointer hover:underline"
+              onClick={() => setIsLogin(false)}
+            >
+              Create an Account
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

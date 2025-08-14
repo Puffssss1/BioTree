@@ -12,7 +12,7 @@ import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { useState } from "react";
 // import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { signUp } from "@/app/actions/auth";
+import { signinWithGoogle, signUp } from "@/app/actions/auth";
 
 type SignupProps = React.ComponentProps<"div"> & {
   setIsLogin: (value: boolean) => void;
@@ -282,35 +282,36 @@ export function Signup({ className, setIsLogin, ...props }: SignupProps) {
                   </div>
                 )}
               </Button>
-
-              {/* Divider */}
-              <div className="flex items-center">
-                <div className="flex-1 border-t border-gray-200"></div>
-                <span className="px-4 text-sm text-gray-500">or</span>
-                <div className="flex-1 border-t border-gray-200"></div>
-              </div>
-
-              {/* use Google */}
-              <Button
-                variant="outline"
-                className="w-full hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                Signup with Google
-              </Button>
-            </div>
-
-            {/* ✅ Toggle login/signup instead of redirect */}
-            <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <button
-                type="button"
-                className="underline underline-offset-4 text-blue-600 cursor-pointer"
-                onClick={() => setIsLogin(true)}
-              >
-                Login
-              </button>
             </div>
           </form>
+          {/* Divider */}
+          <div className="m-5 flex items-center">
+            <div className="flex-1 border-t border-gray-200"></div>
+            <span className="px-4 text-sm text-gray-500">or</span>
+            <div className="flex-1 border-t border-gray-200"></div>
+          </div>
+
+          {/* use Google */}
+          <Button
+            variant="outline"
+            disabled
+            className="w-full hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            onClick={signinWithGoogle}
+          >
+            Signup with Google
+          </Button>
+
+          {/* ✅ Toggle login/signup instead of redirect */}
+          <div className="mt-7 text-center text-sm">
+            Already have an account?{" "}
+            <button
+              type="button"
+              className="underline underline-offset-4 text-blue-600 cursor-pointer"
+              onClick={() => setIsLogin(true)}
+            >
+              Login
+            </button>
+          </div>
         </CardContent>
       </Card>
     </div>
