@@ -9,12 +9,6 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      {/* Animated background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-500"></div>
-      </div>
       <div className="relative z-10 w-full max-w-md">
         <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
           <div className="w-full max-w-sm">
