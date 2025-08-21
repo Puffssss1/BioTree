@@ -14,8 +14,9 @@ interface StepThreeProps {
   formData: {
     name: string;
     bio: string;
+    card_title: string;
     location: string;
-    avatar: string;
+    image_url: string;
   };
   links: Link[];
   iconComponents: Record<string, React.ElementType>;
@@ -35,10 +36,10 @@ export default function StepThree({
         </h2>
         <div className="flex items-center space-x-4">
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden">
-            {formData.avatar ? (
+            {formData.image_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={formData.avatar}
+                src={formData.image_url}
                 alt="Avatar"
                 className="w-full h-full object-cover"
               />
@@ -53,7 +54,8 @@ export default function StepThree({
             )}
           </div>
           <div>
-            <h3 className="text-lg font-semibold">{formData.name}</h3>
+            <h1 className="text-lg font-semibold">{formData.card_title}</h1>
+            <h3 className="text-lg">{formData.name}</h3>
             <p className="text-gray-600 text-sm">{formData.bio}</p>
             <p className="text-gray-500 text-sm">📍 {formData.location}</p>
           </div>

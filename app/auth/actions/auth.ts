@@ -170,3 +170,20 @@ export async function verifyEmail(
     redirect("/error");
   }
 }
+
+export async function getCards(user_id: string | undefined = "") {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("bio_card")
+    .select("*")
+    .eq("user_id", user_id);
+
+  if (error) {
+    console.error(error.message);
+    return error.message;
+  }
+  console.log(data);
+
+  return data;
+}

@@ -7,6 +7,8 @@ import * as LucideIcons from "lucide-react";
 import { Save } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { toast } from "sonner";
+import { creatClientCSR } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
 
 export default function BioCard() {
   const [step, setStep] = useState(1);
@@ -14,12 +16,13 @@ export default function BioCard() {
     name: "",
     bio: "",
     location: "",
-    avatar: "",
+    image_url: "",
+    card_title: "",
   });
 
   const [links, setLinks] = useState([
     {
-      id: "1",
+      id: "",
       title: "",
       url: "",
       icon: "Globe",
@@ -65,16 +68,48 @@ export default function BioCard() {
     setLinks((prev) => prev.filter((link) => link.id !== id));
   };
 
-  const handleCLick = () => {
+  const handleCLick = async () => {
+    const supabase = creatClientCSR();
+    const user = await supabase.auth.getUser();
+
+    const payload = {
+      user_id: user.data.user?.id,
+      image_url: formData.image_url,
+      name: formData.name,
+      about: formData.bio,
+      location: formData.location,
+      bio_title: formData.card_title || "My Bio",
+      links: links.map((link) => ({
+        title: link.title,
+        url: link.url,
+        icon: link.icon,
+        color: link.color,
+      })),
+    };
+
+    const res = await fetch("api/save-card", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      toast.error(err.message || "Error saving bio card");
+      return;
+    }
+
+    console.log(payload);
+
     toast.success(
-      "You have Created your BioTree, share the link to your link to anyone!"
+      "You have Created your BioTree, share the link to your link to anyone 🎉"
     );
-    console.log(links);
-    console.log(formData);
+
+    redirect("/");
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <section className="relative z-10 max-w-3xl mx-auto mt-34 px-4 space-y-8 ">
       {step === 1 && (
         <StepOne formData={formData} handleInputChange={handleInputChange} />
       )}
@@ -94,11 +129,12 @@ export default function BioCard() {
         />
       )}
 
+      {/* Step navigation */}
       <div className="flex justify-between pt-4">
         {step > 1 && (
           <button
             onClick={() => setStep((prev) => prev - 1)}
-            className="px-4 py-2 bg-gray-300 rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="px-4 py-2 bg-gray-200 rounded-xl hover:shadow-lg transition"
           >
             Back
           </button>
@@ -106,19 +142,20 @@ export default function BioCard() {
         {step < 3 ? (
           <button
             onClick={() => setStep((prev) => prev + 1)}
-            className="ml-auto px-4 py-2 bg-purple-500 text-white rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="ml-auto px-4 py-2 bg-purple-500 text-white rounded-xl hover:shadow-lg transition"
           >
             Next
           </button>
         ) : (
           <button
-            className="ml-auto flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             onClick={handleCLick}
+            className="ml-auto flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-xl hover:shadow-lg transition"
           >
-            <Save className="w-4 h-4" /> <span>Finish</span>
+            <Save className="w-4 h-4" />
+            Finish
           </button>
         )}
       </div>
-    </div>
+    </section>
   );
 }
