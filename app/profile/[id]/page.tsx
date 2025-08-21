@@ -2,7 +2,7 @@ import * as LucideIcons from "lucide-react";
 import { Globe, LucideIcon } from "lucide-react";
 
 interface ProfilePageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 interface CardLink {
