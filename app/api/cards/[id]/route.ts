@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = await params;
+export async function GET(req: Request) {
+  // Extract the ID from the URL
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").pop(); // last segment = id
+
+  if (!id) {
+    return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+  }
   const supabase = await createClient();
   try {
     const { data: cards, error: cardError } = await supabase
