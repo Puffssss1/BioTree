@@ -121,8 +121,6 @@ export async function signinWithGoogle() {
     },
   });
 
-  console.log(data);
-
   if (error) {
     console.log(error);
     redirect("/error");
@@ -183,7 +181,6 @@ export async function getCards(user_id: string | undefined = "") {
     console.error(error.message);
     return error.message;
   }
-  console.log(data);
 
   return data;
 }

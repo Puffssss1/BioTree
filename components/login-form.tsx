@@ -40,7 +40,6 @@ export function LoginForm({ className, setIsLogin, ...props }: SignupProps) {
         router.push("/");
         setIsLoading(false);
       }, 1000);
-      console.log("login successful");
     } else {
       setIsLoading(true);
       setTimeout(() => {

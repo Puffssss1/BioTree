@@ -65,8 +65,6 @@ export default function StepOne({ formData, handleInputChange }: StepOneProps) {
 
     // ✅ Save the public URL to formData
     handleInputChange("image_url", data.publicUrl);
-
-    console.log("Uploaded avatar URL:", data.publicUrl);
   };
 
   return (

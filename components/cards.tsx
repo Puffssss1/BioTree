@@ -60,8 +60,6 @@ function Cards() {
         const { data: userData } = await supabase.auth.getUser();
         const userId = userData?.user?.id;
 
-        console.log("User ID:", userId);
-
         // Fetch all cards
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_SITE_URL}/api/save-card`,

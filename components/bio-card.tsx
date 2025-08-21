@@ -99,8 +99,6 @@ export default function BioCard() {
       return;
     }
 
-    console.log(payload);
-
     toast.success(
       "You have Created your BioTree, share the link to your link to anyone 🎉"
     );
