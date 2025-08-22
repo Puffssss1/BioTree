@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Share2 } from "lucide-react";
 import {
   // BellIcon,
   // CalendarIcon,
@@ -48,6 +48,46 @@ const sizeMap = {
   square: "lg:col-span-1 lg:row-span-1",
 };
 
+// 🔹 Share Button Component
+function ShareButton({ id }: { id: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = async () => {
+    const url = `${process.env.NEXT_PUBLIC_SITE_URL}/profile/${id}`;
+
+    try {
+      // Use Web Share API if available (mobile)
+      if (navigator.share) {
+        await navigator.share({
+          title: "Check out this profile",
+          url,
+        });
+      } else {
+        // Fallback: copy to clipboard
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (err) {
+      console.error("Share failed:", err);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleShare}
+      className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-gray-700 shadow transition"
+    >
+      <Share2 className="w-4 h-4" />
+      {copied && (
+        <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs bg-black text-white px-2 py-1 rounded">
+          Copied!
+        </span>
+      )}
+    </button>
+  );
+}
+
 function Cards() {
   const [features, setFeatures] = useState<Feature[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,7 +119,7 @@ function Cards() {
 
           return {
             Icon: GlobeIcon,
-            name: item.name,
+            name: `${item.bio_title} | ${item.name}`,
             description: item.about ?? "No description available",
             href: `/profile/${item.id}`,
             cta: "Learn More",
@@ -97,6 +137,8 @@ function Cards() {
                     className={`w-full h-full bg-gradient-to-tr ${randomBg}`}
                   />
                 )}
+                {/* Share button inside each card */}
+                <ShareButton id={item.id} />
               </div>
             ),
             className: sizeMap.rectTall,
@@ -137,12 +179,23 @@ function Cards() {
 
       {/* Cards Grid */}
       <div className="max-w-5xl w-full">
-        <BentoGrid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[150px]">
+        <BentoGrid
+          className="
+            grid 
+            grid-cols-1 
+            sm:grid-cols-2 
+            lg:grid-cols-3 
+            gap-6 
+            auto-rows-[300px]       /* default (mobile) */
+            sm:auto-rows-[300px]    /* tablets */
+            lg:auto-rows-[150px]    /* desktop */
+          "
+        >
           {features.map((feature, i) => (
             <BentoCard
               key={i}
               {...feature}
-              className={`bg-white/60 backdrop-blur-md border border-white/30 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] ${feature.className}`}
+              className={`bg-white/60 backdrop-blur-md border border-white/30 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] ${feature.className} `}
             />
           ))}
         </BentoGrid>

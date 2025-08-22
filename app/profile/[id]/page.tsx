@@ -117,7 +117,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Profile Page</h1>
-      <p className="text-gray-500 mb-6">Showing card with ID: {id}</p>
+      {/* <p className="text-gray-500 mb-6">Showing card with ID: {id}</p> */}
 
       <div className="bg-white/80 backdrop-blur-sm border border-white/20 shadow-2xl rounded-2xl p-8 space-y-8">
         <div className="flex items-center space-x-6">

@@ -13,7 +13,7 @@ async function NavBar() {
   return (
     <>
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 w-full bg-white z-20">
+      <header className="fixed top-0 left-0 w-full z-20">
         <div className="max-w-6xl mx-auto flex items-center justify-between py-4 px-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-800">
